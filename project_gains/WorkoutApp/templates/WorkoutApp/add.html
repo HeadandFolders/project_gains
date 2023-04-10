@@ -1,0 +1,11 @@
+{% extends "WorkoutApp/layout.html" %}
+{% block body %}
+  <h1>Add Workout</h1>
+  <form action="{% url 'WorkoutApp:add' %}" method="post" class="neonText">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit">
+  </form>
+  <a href="{% url 'WorkoutApp:index' %}">BACK TO HOMEPAGE</a>
+
+{% endblock %}

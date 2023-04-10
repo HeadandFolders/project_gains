@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>index</title>
-</head>
-<body>
+{% extends "WorkoutApp/layout.html" %}
+{% block body %}
+
 	<p>hello world</p>
 	<ul>
 	{% for task in tasks %}
 	<li>{{ task }}</li>
 	{% endfor %}
 	</ul>
-</body>
-</html>
+	
+	<a href="{% url 'WorkoutApp:add' %}">Add New Workout</a>
+	
+	
+{% endblock %}

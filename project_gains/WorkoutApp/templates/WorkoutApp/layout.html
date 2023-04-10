@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>add task</title>
+  <style>
+
+.tag_text{
+  background: #f2ccff;
+  color: #9900cc;
+  border-radius: 4px;
+  width: 200px;
+  padding: 2px;
+}
+.neonText {
+  color: #fff;
+  text-shadow:
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px #0fa,
+      0 0 82px #0fa,
+      0 0 92px #0fa,
+      0 0 102px #0fa,
+      0 0 151px #0fa;
+}
+.neonTextTitle {
+  animation: flicker 1.5s infinite alternate;
+  color: #fff;
+}
+
+h1,p,li {
+  color: whitesmoke;
+  left: 700px;
+}
+
+/* Flickering animation */
+@keyframes flicker {
+    
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+
+      text-shadow:
+      0 0 4px #eeffcc,
+      0 0 11px #eeffcc,
+      0 0 19px #eeffcc,
+      0 0 40px #e6ffb3,
+      0 0 80px #e6ffb3,
+      0 0 90px #e6ffb3,
+      0 0 100px #e6ffb3,
+      0 0 150px #e6ffb3;
+  
+  }
+  
+  20%, 24%, 55% {        
+      text-shadow: none;
+  }    
+}
+
+
+.grid-container {
+  display: grid;
+  gap: 20px 20px;
+  grid-template-areas:
+    'header header header'
+    'main main main'
+    'footer footer footer';
+  background-color: #000000;
+  padding: 20px;
+}
+.grid-container > div {
+  border: 0.2rem solid #fff;
+  padding: 0.4em;
+  width: 300px;
+  box-shadow: 0 0 .2rem #fff,
+              0 0 .2rem #fff,
+              0 0 2rem #ff0000,
+              0 0 0.8rem #ff0000,
+              0 0 2.8rem #ff0000,
+              inset 0 0 1.3rem #ff0000;
+  border-radius: 0.5rem;
+  font-size: 20px;
+  font-family: "Papyrus", Helvetica, sans-serif;
+  text-align: center;
+  color: white;
+  background-image: url("https://2.bp.blogspot.com/-2vfAuw_jC4E/T4Bl4zz6o9I/AAAAAAAAABs/9iHupfgwnhE/s1600/Hand+Painted+Wood.jpg")
+}
+body {
+  background-color: black;
+}
+</style>
+</head>
+<body>
+  {% block body %}
+  {% endblock %}
+</body>
+</html>
