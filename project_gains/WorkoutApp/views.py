@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.template import loader
 from django import forms
 from django.forms import MultiWidget, TextInput 
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 tasks = ["foo", "bar", "baz"]
@@ -20,9 +20,15 @@ def index(request):
     context = {
     'tasks': tasks
     }
+    #if request.user.is_authenticated:
+
     template = loader.get_template('WorkoutApp/index.html')
     return HttpResponse(template.render(context, request))
 
+
+
+#@login_required(login_url='add.html')
+@login_required
 def add(request):
     template = loader.get_template('WorkoutApp/add.html') 
     context = {

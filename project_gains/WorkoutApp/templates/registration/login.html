@@ -1,0 +1,18 @@
+{% extends "WorkoutApp/layout.html" %}
+
+{% block body %}
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <input type="text", name="username", placeholder="Username">
+        <input type="password", name="password", placeholder="Password">
+        <input type="submit", value="Login">
+        <input type="hidden" name="next" value="{{ next }}">
+        <!-- django has a default next parameter for LoginView. default is Default: '/accounts/profile/'. 
+    but i deleted the login view cuz i can go without it. previous code: 
+        <input type="hidden" name="next" value="{{ next }}"> -->
+    </form>
+{% endblock %}
