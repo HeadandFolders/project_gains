@@ -15,6 +15,19 @@ class NewPostForm(forms.Form):
     opinion = forms.CharField(label="workout_opinion")
     rating = forms.IntegerField(max_value=10, min_value=1, label="workout_rating")
     
+class LoginUser(forms.Form):
+    user_name = forms.CharField(max_length=50)
+    password = forms.CharField(max_length = 50)
+def loginuser(request):
+    context = {
+        'form': LoginUser(request.POST)
+
+    }
+    #if request.user.is_authenticated:
+
+    template = loader.get_template('registration/login.html')
+    return HttpResponse(template.render(context, request))
+
 
 def index(request):
     context = {
