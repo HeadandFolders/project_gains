@@ -3,7 +3,10 @@
   <h1>Add Workout</h1>
   <form action="{% url 'WorkoutApp:add' %}" method="post" class="neonText">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ formurl.as_p }}
+    {{ formpost.as_p}}
+    <span style="color: rgb(138, 67, 147);">please ensure that incase of multiple tags, tags are separated by a space</span>
+    {{ formtag.as_p}}
     <input type="submit">
   </form>
   <a href="{% url 'WorkoutApp:index' %}">BACK TO HOMEPAGE</a>

@@ -3,21 +3,17 @@ from django.urls import reverse
 from django.shortcuts import render,redirect
 from django.template import loader
 from django import forms
-from django.forms import MultiWidget, TextInput  #for the placeholder
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages #django flash messages
 from django.contrib.auth import login, authenticate
+from .forms import NewHashtag, NewPostForm, NewVideo, LoginUser
+from WorkoutApp.models import Video, Post, Hashtag
+from django.utils import timezone
 # Create your views here.
 
 tasks = ["foo", "bar", "baz"]
-
-class NewPostForm(forms.Form):
-    url = forms.URLField(label="workout_url")
-    hashtag = forms.CharField(widget=TextInput(attrs={'placeholder': '#UpperBody'}), label="workout_hashtag")
-    opinion = forms.CharField(label="workout_opinion")
-    rating = forms.IntegerField(max_value=10, min_value=1, label="workout_rating")
 
 def create_user(request):
     template = loader.get_template('registration/signup.html')
@@ -43,9 +39,6 @@ def create_user(request):
         template = loader.get_template('registration/signup.html')
         return HttpResponse(template.render(context, request))
     
-class LoginUser(forms.Form):
-    user_name = forms.CharField(max_length=50)
-    password = forms.CharField(max_length = 50)
 def loginuser(request):
     context = {
         'form': LoginUser(request.POST)
@@ -59,7 +52,7 @@ def loginuser(request):
 
 def index(request):
     context = {
-    'tasks': tasks
+    'tasks': Post.objects.order_by('-pub_date')[:5]
     }
     #if request.user.is_authenticated:
 
@@ -73,16 +66,36 @@ def index(request):
 def add(request):
     template = loader.get_template('WorkoutApp/add.html') 
     context = {
-        "form": NewPostForm()
+        "formurl": NewVideo(),
+        "formpost": NewPostForm(),
+        "formtag": NewHashtag()
     }
     if request.method == "POST":
         form = NewPostForm(request.POST)
-        if form.is_valid():
-            workout = form.cleaned_data["hashtag"]
-            tasks.append(workout)
+        form2 = NewVideo(request.POST)
+        form3 = NewHashtag(request.POST)
+        if form.is_valid() and form2.is_valid() & form3.is_valid():
+            url = form2.cleaned_data["url"]
+            v, created = Video.objects.get_or_create(url = url)
+            v.save()
+            posto = form.cleaned_data["opinion"]
+            postr = form.cleaned_data["rating"]
+            p = Post(opinion=posto, pub_date=timezone.now(), rating=postr, author= request.user, url= v)
+            p.save()
+            hashtag = form3.cleaned_data["hashtag"]
+            x = hashtag.split(" ")
+            for i in x:
+                i,created = Hashtag.objects.get_or_create(hashtag = i)
+                i.save()
+                p.hashtag.add(i)
+            
+            
+
             return HttpResponseRedirect(reverse("WorkoutApp:index"))
         else:
             return render(request, "WorkoutApp/add.html",{
-                "form": form
+                "formurl": NewVideo(),
+                "formpost": NewPostForm(),
+                "formtag": NewHashtag()
             })
     return HttpResponse(template.render(context, request))

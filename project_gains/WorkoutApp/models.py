@@ -30,6 +30,7 @@ class Video(models.Model):
 
 
 class Post(models.Model):
+    pub_date = models.DateTimeField('date published')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     url = models.ForeignKey(Video,on_delete=models.CASCADE) #ManyToOne because each post can have one video but each video has multiple people posting about it 
     hashtag = models.ManyToManyField(Hashtag) #because each post can have multiple tags and tags can be included in multiple posts
