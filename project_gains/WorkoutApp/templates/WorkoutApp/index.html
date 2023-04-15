@@ -1,27 +1,93 @@
 {% extends "WorkoutApp/layout.html" %}
 {% block body %}
 
-	<p>hello world</p>
-	<h1 class="neonTextTitle"> UNTIL WE DECIDE ON THE NAME </h1>
-      <div class="grid-container">
-        {% for q in tasks %}
-          <div>
-			<p style="font-size: x-small;">{{ q.author }}</p>
-			<iframe src="{{ q.url }}" height="200" width="200">media</iframe>
-            <p style="font-size: small;">{{ q.opinion }}</p>
-			<p style="font-size: small;">Rating: {{ q.rating }}</p>
-			{% for hashtag in q.hashtag.all %}
-                <center><p style="font-size: small;" class="tag_text">{{ hashtag.hashtag }}</p></center>
-            {% endfor %}
-			<p style="font-size: x-small;">{{ q.pub_date }}</h6>
-            
-          </div>
-        {% endfor %}
-          </div>
-	{% if request.user.is_authenticated %}
-  		<a href="{% url 'WorkoutApp:add' %}" class="neonText">Add New Workout</a>
-  		<a href="{% url 'logout' %}" class="neonText">LOGOUT</a>
-	{% else %}
-		<a href="{% url 'WorkoutApp:add' %}" class="neonText">Add New Workout</a>
-	{% endif %}
+	<div class="topnav">
+		<a href="#" style="padding: 10px 40px;">About</a>
+		<input type="search" style="margin: 10px 40px;" placeholder="Search"/>
+	</div>
+	<div class="row">
+		<div class="column middle">
+			{% for q in tasks %}
+			
+          		<div class="post-div">
+					<p class="author" style="font-size: x-small;">{{ q.author }}</p>
+					<!--<iframe src="{{ q.url.url }}" height="200" width="200">media</iframe-->
+					<a class="url" href="{{ q.url.url }}">video</a>
+            		<p style="font-size: small;">{{ q.opinion }}</p>
+					<p class="rating" style="font-size: small;">Rating: {{ q.rating }}</p>
+					{% for hashtag in q.hashtag.all %}
+                		<p style="font-size: small;" class="tag_text">{{ hashtag.hashtag }}</p>
+            		{% endfor %}
+					<p style="font-size: x-small;">{{ q.pub_date }}</h6>
+						<button id="openform{{ forloop.counter0 }}" class="open-button">tried it</button>
+
+						<div class="form-popup" id="myForm{{ forloop.counter0 }}">
+						  <form action="{% url 'WorkoutApp:contribute' %}" method="post" class="form-container contactForm">
+							{% csrf_token %}
+							<h3 style="color: #0B7A75;">Contribution</h3>
+							<input  type="text" class="tag_hidden"/>
+							 
+							{{ formpost.as_p }}
+							<input type="url" value="#" class="url_hidden"/>
+							<button type="submit" class="btn" >Contribute</button>
+							<!--button id="clicky{{ forloop.counter0 }}" type="button" class="btn clicky" >Check</button-->
+							<button id="closeform{{ forloop.counter0 }}" type="button" class="btn cancel " class="closeform" onclick="closeForm()">Close</button>
+						  </form>
+						</div>
+						
+						<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+						<script>
+							$(document).ready(function () {
+
+    							$(".open-button").click((clicked) => {
+									var id = clicked.target.id;
+									alert(id);
+									var matches = id.match(/\d+$/);
+									if (matches) {
+    									var numString = matches[0];
+										alert(numString);
+										$("#myForm"+numString).css("display","block");
+									}
+									
+									var temp_string = "";
+									$("#"+id).parentsUntil(".post-div").siblings(".tag_text").css('color','yellow');
+									$("#"+id).parentsUntil(".post-div").siblings(".tag_text").each(function() {
+   										temp_string += $(this).text();
+									});
+									//alert(temp_string);
+									$(".tag_hidden").val(temp_string);
+									$("#"+id).parentsUntil(".post-div").siblings(".url").css('color','red');
+									var url = $("#"+id).parentsUntil(".post-div").siblings(".url");
+									$(".url_hidden").val(url.attr('href'));
+								});
+								
+							});
+						</script>
+						<script>
+							function closeForm(){
+								var id = $(".closeform").target.id;
+									alert(id);
+									var matches = id.match(/\d+$/);
+									if (matches) {
+    									var numString = matches[0];
+										alert(numString);
+										$("#myForm"+numString).css("display","none");
+									}
+
+							}
+						</script>
+          		</div>
+		  		<br>
+        	{% endfor %}
+			{% if request.user.is_authenticated %}
+  				<a href="{% url 'WorkoutApp:add' %}" class="neonText">Add New Workout</a>
+  				<a href="{% url 'logout' %}" class="neonText">LOGOUT</a>
+			{% else %}
+				<a href="{% url 'WorkoutApp:add' %}" class="neonText">Add New Workout</a>
+			{% endif %}
+		</div>
+		<div class="column side">
+			<p>HELOO WORLD</p>
+		</div>
+	</div>
 {% endblock %}

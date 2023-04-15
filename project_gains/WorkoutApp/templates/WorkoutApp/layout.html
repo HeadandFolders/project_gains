@@ -2,7 +2,83 @@
 <html lang="en">
 <head>
   <title>add task</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #efedd5;
+  color: #FF0090;
+  padding: 5px 5px 5px 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  opacity: 0.8;
+  float: inline-end;
+  height: 20px;
+  width: 80px;
+  text-align: center;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right:550px;
+  border: 3px solid #f1f1f1;
+  width: 350px;
+  border-radius: 4px;
+
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 600px;
+  padding: 5px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100px;
+  padding: 5px;
+  margin: 2px 0 5px 0;
+  border: none;
+  background: #f1f1f1;
+}
+.form-container label{
+  color: #0B7A75;
+
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  margin-bottom:5px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
 
 .tag_text{
   background: #f2ccff;
@@ -23,67 +99,85 @@
       0 0 102px rgb(165, 129, 227),
       0 0 151px rgb(215, 164, 238);
 }
-.neonTextTitle {
-  animation: flicker 1.5s infinite alternate;
-  color: #f7f7e6;
-}
 
 h1,p,li,td,th {
-  color: whitesmoke;
-  left: 700px;
-}
-
-/* Flickering animation */
-@keyframes flicker {
-    
-  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-
-    text-shadow:
-      0 0 7px #d871db,
-      0 0 10px #bc69f4,
-      0 0 21px #ba7fed,
-      0 0 42px rgb(172, 113, 211),
-      0 0 82px rgb(160, 102, 174),
-      0 0 92px rgb(211, 159, 236),
-      0 0 102px rgb(165, 129, 227),
-      0 0 151px rgb(215, 164, 238);
-  
-  }
-  
-  20%, 24%, 55% {        
-      text-shadow: none;
-  }    
+  color: #f5f1ed;
 }
 
 
-.grid-container {
-  display: grid;
-  gap: 20px 20px;
-  grid-template-areas:
-    'header header header'
-    'main main main'
-    'footer footer footer';
-  background-color: #212121;
-  padding: 20px;
-}
-.grid-container > div {
-  border: 0.2rem solid #fff;
-  padding: 0.4em;
-  width: 250px;
-  box-shadow: 0 0 .2rem #fff,
-              0 0 .2rem #fff,
-              0 0 2rem #ff00dd,
-              0 0 0.8rem #fd73ff,
-              0 0 2.8rem #d57ff7,
-              inset 0 0 1.3rem #ea00ff;
-  border-radius: 0.5rem;
-  font-family: sans-serif;
-  text-align: center;
-  color: white;
-  background-image: url("https://2.bp.blogspot.com/-2vfAuw_jC4E/T4Bl4zz6o9I/AAAAAAAAABs/9iHupfgwnhE/s1600/Hand+Painted+Wood.jpg")
-}
 body {
   background-color: #212121;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+/* Style the header */
+.header {
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #002500;
+  font-family: Helvetica, Arial, 'Franklin Gothic Medium';
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f4f1bb;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #dfc2f2;
+  color: #002500;
+}
+
+/* Create two unequal columns that float next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+/*  Right column */
+.column.side {
+  width: 40%;
+}
+
+/* Middle column */
+.column.middle {
+  width: 60%;
+}
+.column.middle > div {
+  border: 0.2rem solid #1a1d1d;
+  padding: 0.4em;
+  border-radius: 0.5rem;
+  font-family: sans-serif;
+  color: white;
+  background-color: #6f50bf;
+  margin: 0%;
+  height: 220px
+  
+}
+/* Clear floats after the columns */
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle {
+    width: 100%;
+  }
 }
 </style>
 </head>

@@ -38,7 +38,7 @@ def create_user(request):
         context = {'form': form}
         template = loader.get_template('registration/signup.html')
         return HttpResponse(template.render(context, request))
-    
+"""   
 def loginuser(request):
     context = {
         'form': LoginUser(request.POST)
@@ -48,11 +48,13 @@ def loginuser(request):
 
     template = loader.get_template('registration/login.html')
     return HttpResponse(template.render(context, request))
-
+"""
 
 def index(request):
     context = {
-    'tasks': Post.objects.order_by('-pub_date')[:5]
+    'tasks': Post.objects.order_by('-pub_date')[:5],
+    "formpost": NewPostForm(),
+    
     }
     #if request.user.is_authenticated:
 
@@ -60,6 +62,26 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
+def contribute(request):
+    pass
+    """
+    if request.method == "POST" and request.is_ajax():
+        form = NewPostForm(request.POST)
+        if form.is_valid():
+            url = request.POST['data']['url']
+            v, created = Video.objects.get_or_create(url = url)
+            v.save()
+            posto = form.cleaned_data["opinion"]
+            postr = form.cleaned_data["rating"]
+            p = Post(opinion=posto, pub_date=timezone.now(), rating=postr, author= request.user, url= v)
+            p.save()
+            hashtag = request.cleaned_data["data"]["tag"]
+            for i in hashtag:
+                i,created = Hashtag.objects.get_or_create(hashtag = i)
+                i.save()
+                p.hashtag.add(i)
+    """
 
 #@login_required(login_url='add.html')
 @login_required
