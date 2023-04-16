@@ -52,7 +52,7 @@ def loginuser(request):
 
 def index(request):
     context = {
-    'tasks': Post.objects.order_by('-pub_date')[:5],
+    'tasks': Post.objects.filter(PostCom=None),
     "formpost": NewPostForm(),
     
     }
@@ -64,24 +64,43 @@ def index(request):
 
 @login_required
 def contribute(request):
-    pass
-    """
-    if request.method == "POST" and request.is_ajax():
+    template = loader.get_template('WorkoutApp/index.html') 
+    context = {
+       # "formurl": NewVideo(),
+        "formpost": NewPostForm(),
+        #"formtag": NewHashtag()
+    }
+    if request.method == "POST":
         form = NewPostForm(request.POST)
+        form_data = request.POST
         if form.is_valid():
-            url = request.POST['data']['url']
-            v, created = Video.objects.get_or_create(url = url)
-            v.save()
+            url = form_data["url_hidden"]
+            v = Video.objects.get(url = url)
+            #v.save()
             posto = form.cleaned_data["opinion"]
             postr = form.cleaned_data["rating"]
             p = Post(opinion=posto, pub_date=timezone.now(), rating=postr, author= request.user, url= v)
             p.save()
-            hashtag = request.cleaned_data["data"]["tag"]
-            for i in hashtag:
-                i,created = Hashtag.objects.get_or_create(hashtag = i)
-                i.save()
-                p.hashtag.add(i)
-    """
+            hashtag = form_data["tag_hidden"]
+            print(hashtag)
+            x = hashtag.split(" ")
+            for i in x:
+                a = Hashtag.objects.get(hashtag=i)
+                
+                #if Hashtag.objects.filter(hashtag__hashatag=i).exists():
+                print("exists")
+                         #found.save()
+                p.hashtag.add(a)
+            
+            
+
+            return HttpResponseRedirect(reverse("WorkoutApp:index"))
+        else:
+            return render(request, "WorkoutApp/index.html",{
+                "formpost": NewPostForm(),
+                
+            })
+    return HttpResponse(template.render(context, request))
 
 #@login_required(login_url='add.html')
 @login_required
