@@ -13,29 +13,31 @@
 			<p class="author" style="font-size: x-small;">{{ q.author }}</p>
 			<!--<iframe src="{{ q.url.url }}" height="200" width="200">media</iframe-->
 			<a class="url" href="{{ q.url.url }}">video</a>
-			<p style="font-size: small;">{{ q.opinion }}</p>
+			<p style="font-size: small;" class="originalposto">{{ q.opinion }}</p>
 			<p class="rating" style="font-size: small;">Rating: {{ q.rating }}</p>
 			{% for hashtag in q.hashtag.all %}
 			<p style="font-size: small;" class="tag_text">{{ hashtag.hashtag }}</p>
 			{% endfor %}
-			{% if q.comments %}
-				<p style="color:white; font-size: x-small;" >this is {{ q.comments.author }}</p>
-				
-
-			{% endif %}
 			<p style="font-size: x-small;">{{ q.pub_date }}</h6>
 			<button id="openform{{ forloop.counter0 }}" class="open-button">tried it</button>
+			<div class="comment">
+				<p>Comments:</p>
+					{% for i in q.comments.all %}
+						<p style="color:white; font-size: x-small;" ><strong>{{ i.author }} : </strong> {{ i.opinion }}</p>
+					{% endfor %}
+			</div>
 				
 
 			<div class="form-popup" id="myForm{{ forloop.counter0 }}">
 				<form action="{% url 'WorkoutApp:contribute' %}" method="post" class="form-container contactForm">
 					{% csrf_token %}
-					<h3 style="color: #0B7A75;">Contribution</h3>
+					<h3 style="color: #0B7A75;">Comment</h3>
 					<input type="url" value="#" class="url_hidden" name="url_hidden"/>
 					<input type="text" class="tag_hidden" name="tag_hidden"/>
+					<input type="text" class="originalposto_hidden" name="oposto_hidden"/>
 
 					{{ formpost.as_p }}
-					<button type="submit" class="btn">Contribute</button>
+					<button type="submit" class="btn">Post</button>
 					<!--button id="clicky{{ forloop.counter0 }}" type="button" class="btn clicky" >Check</button-->
 					<button id="closeform{{ forloop.counter0 }}" type="button"
 						class="btn cancel closeform">Close</button>
@@ -79,6 +81,11 @@
 			$("#" + id).parentsUntil(".post-div").siblings(".url").css('color', 'red');
 			var url = $("#" + id).parentsUntil(".post-div").siblings(".url");
 			$(".url_hidden").val(url.attr('href'));
+			//the below code is for original post opinion input
+			//works//$("#" + id).parentsUntil(".post-div").siblings(".originalposto").css('color', 'red');
+			var o = $("#" + id).parentsUntil(".post-div").siblings(".originalposto");
+			$(".originalposto_hidden").val(o.text());
+
 		});
 
 	});

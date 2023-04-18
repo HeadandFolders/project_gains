@@ -38,7 +38,7 @@ class Post(models.Model):
     rating = models.IntegerField() # same as url but i want it to be in Video so i can later calculate universal ranking of each individual video
     #comment_rating = models.IntegerField()
     #comment_opinio = models.CharField(max_length = 200)
-    comments = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='PostCom')
+    comments = models.ManyToManyField('self', symmetrical=False, blank = True, null=True, related_name='PostCom')
 
     def __str__(self):
         return f"{self.author} - {self.opinion}"

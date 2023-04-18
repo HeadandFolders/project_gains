@@ -20,6 +20,18 @@
   text-align: center;
 }
 
+.comment{
+  height:100%;
+  width: 200px;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  border-left: 1px solid hotpink;
+  padding-left: 10px;
+  font-family: Helvetica, sans-serif;
+  font-size: small;
+
+}
 
 
 /* The popup form - hidden by default */
@@ -157,7 +169,7 @@ body {
 .column.middle {
   width: 60%;
 }
-.column.middle > div {
+.column.middle > .post-div {
   border: 0.2rem solid #1a1d1d;
   padding: 0.4em;
   border-radius: 0.5rem;
@@ -165,9 +177,11 @@ body {
   color: white;
   background-color: #6f50bf;
   margin: 0%;
-  height: 220px
+  height: 220px;
+  position: relative;
   
 }
+
 /* Clear floats after the columns */
 .row::after {
   content: "";

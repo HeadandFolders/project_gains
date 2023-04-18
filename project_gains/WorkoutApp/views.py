@@ -54,6 +54,7 @@ def index(request):
     context = {
     'tasks': Post.objects.filter(PostCom=None),
     "formpost": NewPostForm(),
+    'comments':Post.objects.all(),
     
     }
     #if request.user.is_authenticated:
@@ -91,7 +92,10 @@ def contribute(request):
                 print("exists")
                          #found.save()
                 p.hashtag.add(a)
-            
+            originalpost_opinion = form_data["oposto_hidden"]
+            o = Post.objects.get(opinion=originalpost_opinion)
+            o.comments.add(p)
+            o.save()
             
 
             return HttpResponseRedirect(reverse("WorkoutApp:index"))
