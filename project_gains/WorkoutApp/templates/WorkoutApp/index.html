@@ -31,11 +31,10 @@
 			<div class="form-popup" id="myForm{{ forloop.counter0 }}">
 				<form action="{% url 'WorkoutApp:contribute' %}" method="post" class="form-container contactForm">
 					{% csrf_token %}
-					<h3 style="color: #0B7A75;">Comment</h3>
-					<input type="url" value="#" class="url_hidden" name="url_hidden"/>
-					<input type="text" class="tag_hidden" name="tag_hidden"/>
-					<input type="text" class="originalposto_hidden" name="oposto_hidden"/>
-
+					<h3 style="color: #0B7A75;">Comment:</h3>
+					<input type="hidden" value="#" class="url_hidden" name="url_hidden"/>
+					<input type="hidden" class="tag_hidden" name="tag_hidden"/>
+					<input type="hidden" class="originalposto_hidden" name="oposto_hidden"/>
 					{{ formpost.as_p }}
 					<button type="submit" class="btn">Post</button>
 					<!--button id="clicky{{ forloop.counter0 }}" type="button" class="btn clicky" >Check</button-->
