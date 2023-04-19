@@ -11,6 +11,7 @@ from django.contrib.auth import login, authenticate
 from .forms import NewHashtag, NewPostForm, NewVideo, LoginUser
 from WorkoutApp.models import Video, Post, Hashtag
 from django.utils import timezone
+from django.db.models import Avg
 # Create your views here.
 
 tasks = ["foo", "bar", "baz"]
@@ -55,12 +56,16 @@ def index(request):
     'tasks': Post.objects.filter(PostCom=None),
     "formpost": NewPostForm(),
     'comments':Post.objects.all(),
-    
+    'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
     }
     #if request.user.is_authenticated:
+    query = request.GET.get('search')
+    if query:
+        context['object_list'] = Post.objects.filter(opinion__icontains=request.GET.get('search'))
 
     template = loader.get_template('WorkoutApp/index.html')
     return HttpResponse(template.render(context, request))
+
 
 
 @login_required

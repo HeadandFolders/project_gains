@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.apps import apps #from stackoverflow 
 from django.db.models import Sum #from another stackoverflow post https://stackoverflow.com/questions/56046688/how-to-get-the-sum-of-a-field-in-django
+from django.db.models import Avg
 # Create your models here.
 #personal observation: like in cpp the function order matters here(i.e when Hashtag was below Post there was a warning that Hashtag was not created or smthng?)
 
@@ -23,10 +24,11 @@ class Hashtag(models.Model):
 
 class Video(models.Model):
     url = models.URLField()
+
    # ratings = models.ForeignKey(Post)
     #avgrating = models.IntegerField(null=True, blank=True, default=get_avg_rating(url))
 
-    
+
 
 
 class Post(models.Model):

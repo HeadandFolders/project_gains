@@ -139,7 +139,7 @@ body {
 }
 
 /* Style the topnav links */
-.topnav a {
+.topnav a{
   float: left;
   display: block;
   color: #f4f1bb;
@@ -158,26 +158,31 @@ body {
 .column {
   float: left;
   padding: 10px;
+  position: absolute;
 }
 
 /*  Right column */
 .column.side {
-  width: 40%;
+  width: 35%;
+  right: -30px;
+  height: 100%;
 }
 
 /* Middle column */
 .column.middle {
-  width: 60%;
+
+  width: 65%;
+  float: left;
 }
 .column.middle > .post-div {
   border: 0.2rem solid #1a1d1d;
   padding: 0.4em;
   border-radius: 0.5rem;
-  font-family: sans-serif;
+  font-family: Helvetica;
   color: white;
   background-color: #6f50bf;
   margin: 0%;
-  height: 220px;
+  height: 230px;
   position: relative;
   
 }
@@ -187,6 +192,7 @@ body {
   content: "";
   display: table;
   clear: both;
+  position: relative;
 }
 
 /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
