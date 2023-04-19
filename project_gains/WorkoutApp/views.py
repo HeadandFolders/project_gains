@@ -12,6 +12,7 @@ from .forms import NewHashtag, NewPostForm, NewVideo, LoginUser
 from WorkoutApp.models import Video, Post, Hashtag
 from django.utils import timezone
 from django.db.models import Avg
+from django.db.models import Q
 # Create your views here.
 
 tasks = ["foo", "bar", "baz"]
@@ -51,7 +52,24 @@ def loginuser(request):
     return HttpResponse(template.render(context, request))
 """
 
+
 def index(request):
+    context = {
+    'tasks': Post.objects.filter(PostCom=None),
+    "formpost": NewPostForm(),
+    'comments':Post.objects.all(),
+    'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
+    }
+    #if request.user.is_authenticated:
+    #query = request.GET.get('search')
+    #if query:
+     #   context['object_list'] = Post.objects.filter(opinion__icontains=request.GET.get('search'))
+
+    template = loader.get_template('WorkoutApp/index.html')
+    return HttpResponse(template.render(context, request))
+
+
+def search(request):
     context = {
     'tasks': Post.objects.filter(PostCom=None),
     "formpost": NewPostForm(),
@@ -61,11 +79,9 @@ def index(request):
     #if request.user.is_authenticated:
     query = request.GET.get('search')
     if query:
-        context['object_list'] = Post.objects.filter(opinion__icontains=request.GET.get('search'))
-
-    template = loader.get_template('WorkoutApp/index.html')
+        context['object_list'] = Post.objects.filter(opinion__icontains=query)
+    template = loader.get_template('WorkoutApp/search.html')
     return HttpResponse(template.render(context, request))
-
 
 
 @login_required

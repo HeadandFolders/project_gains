@@ -4,14 +4,14 @@
 <div class="topnav">
 	<a href="#" style="padding: 10px 40px;">About</a>
 	<!--input type="search" style="margin: 10px 40px;" placeholder="Search" /-->
-	<form action="{% url 'WorkoutApp:search' %}" method="get">
+	<form action="">
 		<input style="margin: 10px 40px;" type="text" name="search" placeholder="Search by tag or keywords" value="{{request.GET.search}}">
 		<input type="submit" value="Search" id="search" >
 	</form>
 </div>
 <div class="row">
 	<div class="column middle">
-		{% for q in tasks %}
+		{% for q in object_list %}
 
 		<div class="post-div">
 			<p class="author" style="font-size: x-small;">{{ q.author }}</p>
@@ -56,7 +56,8 @@
 		</div>
 		{% endfor %}
 		<br>
-		
+		<a href="{% url 'WorkoutApp:index' %}" class="neonText">Back to Homepage</a>
+        <br>
 		{% if request.user.is_authenticated %}
 		<a href="{% url 'WorkoutApp:add' %}" class="neonText">Add New Workout</a>
 		<a href="{% url 'logout' %}" class="neonText">LOGOUT</a>
@@ -69,7 +70,9 @@
 
 	<div class="column side">
 		<p>HELOO WORLD</p>
+		
 	</div>
+    
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -77,11 +80,11 @@
 
 		$(".open-button").click((clicked) => {
 			var id = clicked.target.id;
-			alert(id);
+			//alert(id);
 			var matches = id.match(/\d+$/);
 			if (matches) {
 				var numString = matches[0];
-				alert(numString);
+				//alert(numString);
 				$("#myForm" + numString).css("display", "block");
 			}
 
@@ -105,15 +108,15 @@
 	});
 	$(document).ready(function () {
 		$(".closeform").click((clicked) => {
-			alert("you are here");
+			//alert("you are here");
 			var idd = clicked.target.id;
-			alert(idd);
+			//alert(idd);
 			var matches = idd.match(/\d+$/);
 			if (matches) {
 				var numString = matches[0];
-				alert(numString);
+				//alert(numString);
 				var go = "#myForm" + numString;
-				alert(go);
+				//alert(go);
 				$("#myForm" + numString).css("display", "none");
 				//document.getElementById(go).style.display = "none";
 			}
