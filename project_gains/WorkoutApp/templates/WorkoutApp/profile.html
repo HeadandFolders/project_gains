@@ -1,0 +1,45 @@
+{% extends "WorkoutApp/layout.html" %}
+
+{% block body %}
+
+<h1>Hello, {{user.username}}</h1>
+<h5>email: {{user.email}}</h5>
+
+<div class="row">
+    <div class="column middle">
+        <h2>Posts:</h2>
+        {% for q in tasks %}
+        <div class="post-div">
+            <p class="author" style="font-size: x-small;">{{ q.author }}</p>
+            <!--<iframe src="{{ q.url.url }}" height="200" width="200">media</iframe-->
+            <a class="url" href="{{ q.url.url }}">video</a>
+            {% for x in avg_rating.all %}
+
+            {% if x.url == q.url.url %}
+
+            <p style="font-size: x-small;">Average Rating: {{ x.average_rating|floatformat:2 }}/10</p>
+            {% endif %}
+            {% endfor %}
+            <p style="font-size: small;" class="originalposto">{{ q.opinion }}</p>
+            <p class="rating" style="font-size: small;">Rating: {{ q.rating }}</p>
+            {% for hashtag in q.hashtag.all %}
+            <p style="font-size: small;" class="tag_text">{{ hashtag.hashtag }}</p>
+            {% endfor %}
+            <p style="font-size: x-small;">{{ q.pub_date }}</h6>
+                <button id="openform{{ forloop.counter0 }}" class="open-button">tried it</button>
+            <div class="comment">
+                <p>Comments:</p>
+                {% for i in q.comments.all %}
+                <p style="color:white; font-size: x-small;"><strong>{{ i.author }} : </strong> {{ i.opinion }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+        <a href="{% url 'WorkoutApp:index' %}" class="neonText">Back to Homepage</a>
+    </div>
+    
+</div>
+
+
+{% endblock %}

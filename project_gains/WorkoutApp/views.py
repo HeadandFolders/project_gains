@@ -51,7 +51,21 @@ def loginuser(request):
     template = loader.get_template('registration/login.html')
     return HttpResponse(template.render(context, request))
 """
+@login_required
+def profile(request):
+    context = {
+    'tasks': Post.objects.filter(PostCom=None, author=request.user),
+    'user': request.user,
+    'comments':Post.objects.all(),
+    'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
+    }
+    #if request.user.is_authenticated:
+    #query = request.GET.get('search')
+    #if query:
+     #   context['object_list'] = Post.objects.filter(opinion__icontains=request.GET.get('search'))
 
+    template = loader.get_template('WorkoutApp/profile.html')
+    return HttpResponse(template.render(context, request))
 
 def index(request):
     context = {
