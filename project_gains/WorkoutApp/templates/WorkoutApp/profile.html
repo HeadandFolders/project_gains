@@ -9,8 +9,9 @@
     <div class="column middle">
         <h2>Posts:</h2>
         {% for q in tasks %}
+        <p>exists</p>
         <div class="post-div">
-            <p class="author" style="font-size: x-small;">{{ q.author }}</p>
+            <p class="author" style="font-size: x-small;">{{ q.author.username }}</p>
             <!--<iframe src="{{ q.url.url }}" height="200" width="200">media</iframe-->
             <a class="url" href="{{ q.url.url }}">video</a>
             {% for x in avg_rating.all %}

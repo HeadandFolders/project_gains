@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>About</title>
+        <script src="https://cdn.babylonjs.com/babylon.js"></script>
+        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+        <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background-color: #01010e;
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+            }
+            #test {
+                position: fixed;
+                top: 0px !important;
+                left: 0px !important;
+                width: 100%;
+                height: 70px;
+                background-color: #01010e;
+                opacity: 80%;
+                
+            }
+            #test a{
+                color: white;
+                display: block;
+                text-align: center;
+                float: left;
+                padding: 14px 20px;
+                text-decoration: none;
+
+            }
+            #test a:hover{
+                color: #fc4445;
+            }
+            h1 {
+                font-size: xx-large;
+                padding-left: 20px;
+                color: #facfad;
+                opacity: 85%;
+            }
+            h2{
+                font-size: x-large;
+                padding-left: 20px;
+                color: #748067;
+                opacity: 80%;
+            }
+            
+            .container {
+                position: relative;
+                /*display: inline-block;*/
+                right: 100px;
+            }
+            
+            .droplet1 {
+                position: absolute;
+                z-index: 2;
+                width: 5px;
+                height: 10px;
+                background-color: red;
+                position: relative;
+                animation-name: example;
+                animation-duration: 10s;
+                float: right;
+                rotate: 20deg;
+                border-radius: 69% 31% 28% 72% / 58% 55% 45% 42%;
+                animation-iteration-count: infinite;
+        
+            }
+        
+            @keyframes example {
+                0% {
+                    background-color: red;
+                    right: -280px;
+                    top: 180px;
+                }
+        
+                33.3% {
+                    background-color: #e0582a;
+                    right: -220px;
+                    top: 282px;
+                }
+                35%{ rotate: 10deg;}
+        
+                66.6% {
+                    background-color: #370772;
+                    right: -215px;
+                    top: 355px;
+                }
+                70%{
+                    rotate: 45deg;
+                }
+        
+                100% {
+                    background-color: #190d82;
+                    right: -140px;
+                    top: 420px;
+                }
+            }
+
+
+            .droplet2 {
+                position: absolute;
+                z-index: 2;
+                width: 6px;
+                height: 12px;
+                background-color: #fc4445;
+                position: relative;
+                animation-name: example2;
+                animation-duration: 10s;
+                float: right;
+                rotate: 20deg;
+                border-radius: 69% 31% 28% 72% / 58% 55% 45% 42%;
+                animation-iteration-count: infinite;
+        
+            }
+
+            @keyframes example2 {
+                0% {
+                    background-color: red;
+                    right: -340px;
+                    top: 200px;
+                }
+        
+                33.3% {
+                    background-color: #3feee6;
+                    right: -282px;
+                    top: 310px;
+                }
+                35%{ rotate: 10deg;}
+        
+                66.6% {
+                    background-color: #2d99cf;
+                    right: -215px;
+                    top: 355px;
+                }
+                70%{
+                    rotate: 45deg;
+                }
+        
+                100% {
+                    background-color: #3f86f0;
+                    right: -140px;
+                    top: 420px;
+                }
+            }
+
+
+            .droplet3 {
+                position: absolute;
+                z-index: 2;
+                width: 4px;
+                height: 7px;
+                background-color: red;
+                position: relative;
+                animation-name: example3;
+                animation-duration: 7s;
+                float: right;
+                rotate: 20deg;
+                border-radius: 69% 31% 28% 72% / 58% 55% 45% 42%;
+                animation-iteration-count: infinite;
+                animation-delay: 3s;
+        
+            }
+
+            @keyframes example3 {
+                0% {
+                    background-color: red;
+                    right: -290px;
+                    top: 310px;
+                }
+                100% {
+                    background-color: #944654;
+                    right: -270px;
+                    top: 342px;
+                }
+            }  
+            .droplet4 {
+                position: absolute;
+                z-index: 2;
+                width: 4px;
+                height: 7px;
+                background-color: red;
+                position: relative;
+                animation-name: example4;
+                animation-duration: 7s;
+                float: right;
+                rotate: 20deg;
+                border-radius: 69% 31% 28% 72% / 58% 55% 45% 42%;
+                animation-iteration-count: infinite;
+                animation-delay: 3s;
+        
+            }
+
+            @keyframes example4 {
+                0% {
+                    background-color: red;
+                    right: -290px;
+                    top: 310px;
+                }
+                100% {
+                    background-color: #190d82;
+                    right: -295px;
+                    top: 367px;
+                }
+            }            
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        {% load static %}
+        <img style="z-index: 1;float:right;margin-right: 0px;padding-right: 0px;rotate:10deg;"src="{% static 'WorkoutApp/PixCut-removebg_thumbnail (1).png' %}"/>
+        <!--img src="PixCut-removebg_thumbnail.png"/-->
+        <!--https://i.pinimg.com/564x/cf/69/b2/cf69b24ee38840989c6973e3b9d30581.jpg-->
+        <div class="droplet1"></div>
+        <div class="droplet2"></div>
+        <div class="droplet3"></div>
+        <div class="droplet4"></div>
+        </div>
+        
+        <div id="test">
+        <img src="{% static 'WorkoutApp/PixCut-removebg_thumbnail.png' %}" width="55px" height="55px">
+        <a href="{% url 'WorkoutApp:index' %}" >Homepage</a>
+        <a href="{% url 'WorkoutApp:signup' %}">Sign up</a>
+        <a href="{% url 'WorkoutApp:login' %}">Sign in</a>
+        </div>
+
+
+        <canvas id="renderCanvas" touch-action="none" style="margin-top:60px;margin-left: 100px;width:300px;height:300px"></canvas>
+        <!-- touch-action="none" for best results from PEP -->
+
+        <h1 style="font-size: 40px;">Let's Build From Here</h1>
+        <h2>Harnessed for productivity. Designed for collaboration. Welcome to <span style="font-size: 42px;color: #2d99cf;">MTube</span>, the platform fitness people love.</h2>
+        <div style="height: 100px;"></div>
+        <h3 style="color: #748067; padding-left: 20px;">Trusted by the world's leading organisations. (aka this site was created using: )</h3>
+        <br>
+        <div style="align-content: center;width: 600px;padding-left: 20px;">
+            <img src="{% static 'WorkoutApp/djangologo.png' %}" width="140px" height="80" style="padding-left: 25px;">
+            <img src="{% static 'WorkoutApp/Sqlite3logo.png' %}" width="140px" height="80" style="padding-left: 25px;">
+            <img src="{% static 'WorkoutApp/babylonjslogoo.png' %}" width="160px" height="80" style="padding-left: 25px;">
+        </div>
+        <div style="height: 250px;"></div>
+        <h1 style="color: #c6ecae">Here you can share your latest workout video's url, rate it, view other users' ratings, and connect with others to stay accountable on your fitness journey.</h1>
+        <h2 style="color: #94c9a9">And don't worry, we're not about competition, but rather encouraging each other to reach our fitness goals.</h2>
+        <br><br>
+        <h1 style="color: #d2d8b3">You can join accountability groups where you can connect with like-minded individuals who are also working toward their fitness goals.</h1>
+        <h2 style="color: #6d696a">Share your experience, get a peek of your friend's experience, and crush your goals together.</h2>    
+        <br><br>
+        <h1 style="color: #698f3f">We believe that fitness is more than just a physical activity, but also a community that embarks on mindful journeys everyday amid the chaos of our lives.</h1>
+        <br>
+        <h2 style="color: white;"><span style="color: yellowgreen; font-size: 28px; padding: 5px;">Join us</span> as at MTube and become part of our fitness family.</h2>
+        <br>
+        <br>
+
+
+
+
+        <script>
+            const canvas = document.getElementById("renderCanvas"); // Get the canvas element
+            const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+
+            // Add your code here matching the playground format
+            const createScene = function () {
+                const scene = new BABYLON.Scene(engine);
+                scene.clearColor = new BABYLON.Color3(1/255, 1/255, 14/255);
+
+                const camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 4, BABYLON.Vector3.Zero(), scene);
+                camera.attachControl(canvas, true);
+                const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
+
+                const cylinder = BABYLON.MeshBuilder.CreateCylinder("cylinder", { diameter: 0.49 });
+                const groundMat = new BABYLON.StandardMaterial("groundMat");
+                groundMat.diffuseColor = new BABYLON.Color3(252/255, 68/255, 69/255);
+                cylinder.material = groundMat;
+
+                const tcylinder = BABYLON.MeshBuilder.CreateCylinder("cylinder", {height:0.47, diameter:1.1, tessellation: 6});
+                tcylinder.material = groundMat;
+                tcylinder.position.y = 0.9;
+    
+
+                const bcylinder = BABYLON.MeshBuilder.CreateCylinder("cylinder", {height:0.47, diameter:1.1, tessellation: 6});
+                bcylinder.material = groundMat;
+                bcylinder.position.y = -0.9;
+    
+                const dumbell = BABYLON.Mesh.MergeMeshes([cylinder, tcylinder, bcylinder])
+                dumbell.rotation.z = Math.PI / 3;
+
+                const animDumbell = new BABYLON.Animation("dAnimation", "position.y", 1.5, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+                const carKeys = [];
+
+                carKeys.push({
+                    frame: 0,
+                    value: 0
+                });
+
+                carKeys.push({
+                    frame: 2,
+                    value: 0.1
+                });
+
+
+
+
+                carKeys.push({
+                    frame: 4,
+                    value: 0
+                });
+
+                animDumbell.setKeys(carKeys);
+
+                dumbell.animations = [];
+                dumbell.animations.push(animDumbell);
+
+                scene.beginAnimation(dumbell, 0, 20, true);
+
+                return scene;
+
+            };
+
+            const scene = createScene(); //Call the createScene function
+
+            // Register a render loop to repeatedly render the scene
+            engine.runRenderLoop(function () {
+                scene.render();
+            });
+
+            // Watch for browser/canvas resize events
+            window.addEventListener("resize", function () {
+                engine.resize();
+            });
+        </script>
+
+    </body>
+</html>

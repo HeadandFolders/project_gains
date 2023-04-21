@@ -12,10 +12,13 @@ from .forms import NewHashtag, NewPostForm, NewVideo, LoginUser
 from WorkoutApp.models import Video, Post, Hashtag
 from django.utils import timezone
 from django.db.models import Avg
-from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.urls import resolve
 # Create your views here.
 
-tasks = ["foo", "bar", "baz"]
+
+def about(request):
+    return render(request, 'WorkoutApp/about.html')
 
 def create_user(request):
     template = loader.get_template('registration/signup.html')
@@ -51,21 +54,15 @@ def loginuser(request):
     template = loader.get_template('registration/login.html')
     return HttpResponse(template.render(context, request))
 """
-@login_required
-def profile(request):
-    context = {
-    'tasks': Post.objects.filter(PostCom=None, author=request.user),
-    'user': request.user,
-    'comments':Post.objects.all(),
-    'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
-    }
-    #if request.user.is_authenticated:
-    #query = request.GET.get('search')
-    #if query:
-     #   context['object_list'] = Post.objects.filter(opinion__icontains=request.GET.get('search'))
 
-    template = loader.get_template('WorkoutApp/profile.html')
-    return HttpResponse(template.render(context, request))
+def profile(request, username=None):
+        if username:
+            print(username)
+            user = get_object_or_404(User, username=username)
+        else:
+            user = request.user
+        args = {'user': user, 'tasks': Post.objects.filter(author__username= user.username)}
+        return render(request, 'WorkoutApp/profile.html', args)
 
 def index(request):
     context = {
@@ -78,7 +75,7 @@ def index(request):
     #query = request.GET.get('search')
     #if query:
      #   context['object_list'] = Post.objects.filter(opinion__icontains=request.GET.get('search'))
-
+    
     template = loader.get_template('WorkoutApp/index.html')
     return HttpResponse(template.render(context, request))
 
