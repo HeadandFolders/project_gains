@@ -3,7 +3,6 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 
-
 app_name = "WorkoutApp" #this is app name for the urls;it helps uniquely identify all of the urls
 urlpatterns = [
     path("", views.index, name="index"),
@@ -15,5 +14,4 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('profile/<str:username>/', views.profile, name='profile'),
     path('about/',views.about, name='about')
-
 ]

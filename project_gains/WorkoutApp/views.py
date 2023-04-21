@@ -9,11 +9,12 @@ from django.contrib.auth.models import User
 from django.contrib import messages #django flash messages
 from django.contrib.auth import login, authenticate
 from .forms import NewHashtag, NewPostForm, NewVideo, LoginUser
-from WorkoutApp.models import Video, Post, Hashtag
+from WorkoutApp.models import Video, Post, Hashtag, UserProfile, AccGroup
 from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django.urls import resolve
+
 # Create your views here.
 
 
@@ -61,7 +62,9 @@ def profile(request, username=None):
             user = get_object_or_404(User, username=username)
         else:
             user = request.user
-        args = {'user': user, 'tasks': Post.objects.filter(author__username= user.username)}
+        profile = get_object_or_404(UserProfile, name__username=user.username)
+        print(profile.bio)
+        args = {'user': user, 'tasks': Post.objects.filter(author__username= user.username),'image': profile, 'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating"))}
         return render(request, 'WorkoutApp/profile.html', args)
 
 def index(request):
@@ -71,6 +74,9 @@ def index(request):
     'comments':Post.objects.all(),
     'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
     }
+
+    #video_id = Video.objects.values("url").url
+    #print('http://youtube.com/embed/%s' % video_id[0])
     #if request.user.is_authenticated:
     #query = request.GET.get('search')
     #if query:
@@ -87,6 +93,8 @@ def search(request):
     'comments':Post.objects.all(),
     'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
     }
+    
+
     #if request.user.is_authenticated:
     query = request.GET.get('search')
     if query:
