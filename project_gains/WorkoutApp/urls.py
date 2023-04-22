@@ -13,5 +13,6 @@ urlpatterns = [
     path('contribute/', views.contribute, name='contribute'),
     path('search/', views.search, name='search'),
     path('profile/<str:username>/', views.profile, name='profile'),
-    path('about/',views.about, name='about')
+    path('about/',views.about, name='about'),
+    path('savepost/<int:pk>/', views.savepost, name="savepost")
 ]

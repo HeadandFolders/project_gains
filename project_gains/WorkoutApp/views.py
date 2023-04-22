@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages #django flash messages
 from django.contrib.auth import login, authenticate
-from .forms import NewHashtag, NewPostForm, NewVideo, LoginUser
+from .forms import NewHashtag, NewPostForm, NewVideo, LoginUser, ChangeProfile
 from WorkoutApp.models import Video, Post, Hashtag, UserProfile, AccGroup
 from django.utils import timezone
 from django.db.models import Avg
@@ -30,10 +30,21 @@ def create_user(request):
             user.username = user.username.lower()
             user.save()
             messages.success(request, 'You have singed up successfully.')
+            
+            user_profile = UserProfile.objects.create(name=user)
+            user_profile.save()
             login(request, user)
+            #UserProfile.objects.create(name=user)
             template2 = loader.get_template('WorkoutApp/index.html')
-            context = {}
-            return HttpResponse(template2.render(context,request))
+            context = {
+                'tasks': Post.objects.filter(PostCom=None),
+                "formpost": NewPostForm(),
+                'comments':Post.objects.all(),
+                'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
+                'accgroups': AccGroup.objects.all()
+            }
+            #return HttpResponse(template2.render(context,request))
+            return HttpResponseRedirect(reverse("WorkoutApp:index"))
             #return redirect('./WorkoutApp/index.html')
         else:
             return HttpResponse(template.render({'form':form}, request))
@@ -62,10 +73,21 @@ def profile(request, username=None):
             user = get_object_or_404(User, username=username)
         else:
             user = request.user
+
         profile = get_object_or_404(UserProfile, name__username=user.username)
         print(profile.bio)
-        args = {'user': user, 'tasks': Post.objects.filter(author__username= user.username),'image': profile, 'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating"))}
+        args = {'user': user, 'tasks': Post.objects.filter(author__username= user.username),'image': profile, 'formpost': NewPostForm(), 'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating"))}
         return render(request, 'WorkoutApp/profile.html', args)
+
+
+def savepost(request, pk=None):
+    post = get_object_or_404(Post, id=pk)
+    userprofile = UserProfile.objects.get(name=request.user)
+    userprofile.saved_posts.add(post)
+    messages.success(request, 'Profile details updated.')
+    return redirect('WorkoutApp:index')
+
+
 
 def index(request):
     context = {
@@ -73,6 +95,9 @@ def index(request):
     "formpost": NewPostForm(),
     'comments':Post.objects.all(),
     'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
+    'accgroups': AccGroup.objects.all(),
+    #'image': UserProfile.objects.get(name = request.user),
+    'profile': UserProfile.objects.filter()
     }
 
     #video_id = Video.objects.values("url").url
@@ -81,6 +106,7 @@ def index(request):
     #query = request.GET.get('search')
     #if query:
      #   context['object_list'] = Post.objects.filter(opinion__icontains=request.GET.get('search'))
+     #https://stackoverflow.com/questions/69964943/how-to-put-button-value-to-database-django
     
     template = loader.get_template('WorkoutApp/index.html')
     return HttpResponse(template.render(context, request))

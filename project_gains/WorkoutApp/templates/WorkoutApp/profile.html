@@ -11,7 +11,7 @@
         }
 
         body {
-            background-color: #f4faff;
+            background-color: #CDDEE2;
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
         }
@@ -38,7 +38,7 @@
 
         #test a:hover {
             color: #fc4445;
-        
+
         }
 
         .column {
@@ -47,20 +47,102 @@
             /*left: 130px;*/
             border: 1px solid rgb(151, 147, 167);
             margin-bottom: 50px;
-            
+            position: relative;
+            height: fit-content;
         }
-        a{
+
+        a {
             text-decoration: none;
             font-size: 14px;
         }
+
         .tag_text {
-             background: #5a7aa9;
+            background: #5a7aa9;
             color: #faff7f;
             border-radius: 4px;
             width: 100px;
             padding: 0px;
             margin-top: 5px;
+        }
+
+        .comment {
+      position: absolute;
+      right: 0px;
+      text-align: start;
+      
+      width: 30%;
+      height: 100%;
+      font-size: small;
+      top:0%;
     }
+
+
+    /* The popup form - hidden by default */
+    .form-popup {
+      display: none;
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      border: 3px solid #f1f1f1;
+      width: 100%;
+      height: fit-content;
+      border-radius: 4px;
+
+    }
+
+    /* Add styles to the form container */
+    .form-container {
+      width: 100%;
+      padding: 5px;
+      background-color: white;
+      right: 0px;
+    }
+
+    /* Full-width input fields */
+    .form-container input[type=text],
+    .form-container input[type=password] {
+      width: 100px;
+      padding: 5px;
+      margin: 2px 0 5px 0;
+      border: none;
+      background: #f1f1f1;
+    }
+
+    .form-container label {
+      color: #0B7A75;
+
+    }
+
+    /* When the inputs get focus, do something */
+    .form-container input[type=text]:focus,
+    .form-container input[type=password]:focus {
+      background-color: #ddd;
+      outline: none;
+    }
+
+    /* Set a style for the submit/login button */
+    .form-container .btn {
+      background-color: #04AA6D;
+      color: white;
+      padding: 5px 5px;
+      border: none;
+      cursor: pointer;
+      width: 80%;
+      margin-bottom: 5px;
+      opacity: 0.8;
+    }
+
+    /* Add a red background color to the cancel button */
+    .form-container .cancel {
+      background-color: red;
+    }
+
+    /* Add some hover effects to buttons */
+    .form-container .btn:hover,
+    .open-button:hover {
+      opacity: 1;
+    }
+
     </style>
 </head>
 
@@ -73,66 +155,200 @@
         <a href="{% url 'WorkoutApp:signup' %}">Sign up</a>
         <a href="{% url 'WorkoutApp:login' %}">Sign in</a>
     </div>
-    
-        <center>
-            <div style="width: 80%;position: relative;border: 5px solid red;">
-                <img src="{% static 'WorkoutApp/headerimg.jpg' %}" style="width: 100%; height: 200px;z-index: 1;">
-                <img src="{{ image.profile_pic.url }}" alt="" width="150px" height="150px"
-                    style="border-radius: 50%;border: 2px solid white;z-index: 2;position: absolute;top: 130px;left:100px;">
-                <div style="position: absolute;top: 210px;left:310px;text-align: left;">
-                    <h2>{{user.username}}</h2>
-                    <p>{{image.bio}}</p>
-                    <p style="font-size: small;">{{user.email}}</p>
-                </div>
+
+    <center>
+        <div style="width: 80%;position: relative;border: 5px solid red;">
+            <img src="{{ image.banner_pic.url }}" style="width: 100%; height: 200px;z-index: 1;">
+            <!--img src="{% static 'WorkoutApp/headerimg.jpg' %}" style="width: 100%; height: 200px;z-index: 1;"-->
+            <img src="{{ image.profile_pic.url }}" alt="" width="150px" height="150px"
+                style="border-radius: 50%;border: 2px solid white;z-index: 2;position: absolute;top: 130px;left:100px;">
+            <div style="position: absolute;top: 210px;left:310px;text-align: left;">
+                <h2>{{user.username}}</h2>
+                <p>{{image.bio}}</p>
+                <p style="font-size: small;">{{user.email}}</p>
             </div>
-        </center>
-        <center>
-            <div class="column" >
-                <h2 style="text-align: start;color: #4f7cac;">Posts:</h2>
-                {% for q in tasks %}
-                <div style="border: 1px solid rgb(151, 147, 167);margin: 0px;border-top: none; height: 220px;position: relative;">
-                    <img src="{{ image.profile_pic.url }}" alt="" width="60px" height="60px"
-                        style="border-radius: 50%;border: 2px solid white;position: absolute;top: 10px;left:5px;">
-                        <h6 class="author" style="font-size: x-small;position: absolute;top: 17px;left: 70px;color: #4f7cac;">{{ q.author.username }}</h6>
-                        <div style="position: absolute;left:70px;text-align: start; top: 70px;line-height: 110%;">
-                        
-                        <!--<iframe src="{{ q.url.url }}" height="200" width="200">media</iframe-->
-                        <a class="url" href="{{ q.url.url }}">Link</a>
-                        {% for x in avg_rating.all %}
+        </div>
 
-                        {% if x.url == q.url.url %}
-
-                        <p style="font-size: 14px;">Average Rating: {{ x.average_rating|floatformat:2 }}/10</p>
-                        {% endif %}
-                        {% endfor %}
-                        <h5 style="font-size: small;" class="originalposto">{{ q.opinion }}</h5>
-                        <p class="rating" style="font-size: 14px;">Rating: {{ q.rating }}</p>
-                        {% for hashtag in q.hashtag.all %}
-                        <p style="font-size: small;" class="tag_text">{{ hashtag.hashtag }}</p>
-                        {% endfor %}
-                        <p style="font-size: x-small;">{{ q.pub_date }}</h6>
-                    </div>
-                    <div class="comment" style="position: absolute;left:550px;text-align: start;border-left: 1px solid gainsboro;height: 100%;">
-                        <p>Comments:</p>
-                        <br>
-                        {% for i in q.comments.all %}
-                        <p style="color:#5a7aa9; font-size: x-small;"><strong>{{ i.author }} : </strong> {{ i.opinion }}
-                        </p>
-                        
-                        {% endfor %}
-                    </div>
-                </div>
+        {% if image.name.username == request.user.username %}
+        <div style="width:40%;margin-top: 90px;margin-right: 20px;text-align: left;">
+            <form action="{% url 'WorkoutApp:profile' request.user %}" method="post">
+                {% csrf_token %}
+                <label for="avatar">Avatar:</label>
+                <input type="file" name="avatar" id="avatar">
                 <br>
-                {% endfor %}
-                <a href="{% url 'WorkoutApp:index' %}" style="color:#fc4445;font-size: 16px;">Back to Homepage</a>
+                <label for="bio">Bio:</label>
+                <input type="text" name="bio" id="bio">
                 <br>
+                <label for="banner">Banner</label>
+                <input type="file" name="banner" id="banner">
                 <br>
-            </div>
-            
-
-        
+                <input type="submit" value="Change">
+            </form>
+        </div>
+        {% endif %}
     </center>
+    <center>
+        <div class="column">
+            <h2 style="text-align: start;color: #4f7cac;">Posts:</h2>
+            {% for q in tasks %}
+            <div
+                style="border: 1px solid rgb(151, 147, 167);margin: 0px;border-top: none; height: 220px;position: relative;">
+                <img src="{{ image.profile_pic.url }}" alt="" width="60px" height="60px"
+                    style="border-radius: 50%;border: 2px solid white;position: absolute;top: 10px;left:5px;">
+                <h6 class="author" style="font-size: x-small;position: absolute;top: 17px;left: 70px;color: #4f7cac;">
+                    {{ q.author.username }}</h6>
+                <div style="position: absolute;left:70px;text-align: start; top: 70px;line-height: 110%;">
 
+                    <!--<iframe src="{{ q.url.url }}" height="200" width="200">media</iframe-->
+                    <a class="url" href="{{ q.url.url }}">Link</a>
+                    {% for x in avg_rating.all %}
+
+                    {% if x.url == q.url.url %}
+
+                    <p style="font-size: 14px;">Average Rating: {{ x.average_rating|floatformat:2 }}/10</p>
+                    {% endif %}
+                    {% endfor %}
+                    <h5 style="font-size: small;" class="originalposto">{{ q.opinion }}</h5>
+                    <p class="rating" style="font-size: 14px;">Rating: {{ q.rating }}</p>
+                    {% for hashtag in q.hashtag.all %}
+                    <p style="font-size: small;" class="tag_text">{{ hashtag.hashtag }}</p>
+                    {% endfor %}
+                    <p style="font-size: x-small;">{{ q.pub_date }}</h6>
+                </div>
+                <div class="comment"
+                    style="position: absolute;left:550px;text-align: start;border-left: 1px solid gainsboro;height: 100%;">
+                    <p>Comments:</p>
+                    <br>
+                    {% for i in q.comments.all %}
+                    <p style="color:#5a7aa9; font-size: x-small;"><strong>{{ i.author }} : </strong> {{ i.opinion }}
+                    </p>
+
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+
+        </div>
+
+        {% if image.name.username == request.user.username %}
+        <div class="column">
+            <h2 style="text-align: start;color: #4f7cac;position: absolute;width: 100%;">Saved posts:</h2>
+            {% for q in request.user.userprofile.saved_posts.all %}
+
+            <div style="margin-top: 20px;border-top: none; height: 220px;position: relative;padding-top: 10px;">
+                <img src="{{ q.author.userprofile.profile_pic.url }}" alt="" width="60px" height="60px"
+                    style="border-radius: 50%;border: 2px solid white;position: absolute;top: 10px;left:5px;">
+                <h6 class="author" style="font-size: x-small;position: absolute;top: 17px;left: 70px;color: #4f7cac;">
+                    {{ q.author.username }}</h6>
+                <div style="position: absolute;left:70px;text-align: start; top: 70px;line-height: 110%;">
+
+                    <!--<iframe src="{{ q.url.url }}" height="200" width="200">media</iframe-->
+                    <a class="url" href="{{ q.url.url }}">Link</a>
+                    {% for x in avg_rating.all %}
+
+                    {% if x.url == q.url.url %}
+
+                    <p style="font-size: 14px;">Average Rating: {{ x.average_rating|floatformat:2 }}/10</p>
+                    {% endif %}
+                    {% endfor %}
+                    <h5 style="font-size: small;" class="originalposto">{{ q.opinion }}</h5>
+                    <p class="rating" style="font-size: 14px;">Rating: {{ q.rating }}</p>
+                    {% for hashtag in q.hashtag.all %}
+                    <p style="font-size: small;" class="tag_text">{{ hashtag.hashtag }}</p>
+                    {% endfor %}
+                    <p style="font-size: x-small;">{{ q.pub_date }}</h6>
+                </div>
+                <div class="comment"
+                    style="position: absolute;left:550px;text-align: start;border-left: 1px solid gainsboro;height: 100%;">
+                    <p>Comments:</p>
+                    <br>
+                    {% for i in q.comments.all %}
+                    <p style="color:#5a7aa9; font-size: x-small;"><strong>{{ i.author }} : </strong> {{ i.opinion }}
+                    </p>
+
+                    {% endfor %}
+                    <button id="openform{{ forloop.counter0 }}" class="open-button">Tried it!</button>
+                    <div class="form-popup" id="myForm{{ forloop.counter0 }}">
+                        <form action="{% url 'WorkoutApp:contribute' %}" method="post"
+                            class="form-container contactForm">
+                            {% csrf_token %}
+                            <h3 style="color: #0B7A75;">Comment:</h3>
+                            <input type="hidden" value="#" class="url_hidden" name="url_hidden" />
+                            <input type="hidden" class="tag_hidden" name="tag_hidden" />
+                            <input type="hidden" class="originalposto_hidden" name="oposto_hidden" />
+                            {{ formpost.as_p }}
+                            <button type="submit" class="btn">Post</button>
+                            <!--button id="clicky{{ forloop.counter0 }}" type="button" class="btn clicky" >Check</button-->
+                            <button id="closeform{{ forloop.counter0 }}" type="button"
+                                class="btn cancel closeform">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            {% endfor %}
+            {% endif %}
+            <a href="{% url 'WorkoutApp:index' %}" style="color:#fc4445;font-size: 16px;">Back to Homepage</a>
+            <br>
+            <br>
+        </div>
+
+
+
+    </center>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $(".open-button").click((clicked) => {
+                var id = clicked.target.id;
+                //alert(id);
+                var matches = id.match(/\d+$/);
+                if (matches) {
+                    var numString = matches[0];
+                    //alert(numString);
+                    $("#myForm" + numString).css("display", "block");
+                }
+
+                var temp_string = "";
+                $("#" + id).parentsUntil(".post-div").siblings(".tag_text").css('color', 'yellow');
+                $("#" + id).parentsUntil(".post-div").siblings(".tag_text").each(function () {
+                    temp_string += $(this).text() + " ";
+                });
+                //alert(temp_string);
+                $(".tag_hidden").val(temp_string);
+                $("#" + id).parentsUntil(".post-div").siblings(".url").css('color', 'red');
+                var url = $("#" + id).parentsUntil(".post-div").siblings(".url");
+                $(".url_hidden").val(url.attr('href'));
+                //the below code is for original post opinion input
+                //works//$("#" + id).parentsUntil(".post-div").siblings(".originalposto").css('color', 'red');
+                var o = $("#" + id).parentsUntil(".post-div").siblings(".originalposto");
+                $(".originalposto_hidden").val(o.text());
+
+            });
+
+        });
+        $(document).ready(function () {
+            $(".closeform").click((clicked) => {
+                //alert("you are here");
+                var idd = clicked.target.id;
+                //alert(idd);
+                var matches = idd.match(/\d+$/);
+                if (matches) {
+                    var numString = matches[0];
+                    //alert(numString);
+                    var go = "#myForm" + numString;
+                    //alert(go);
+                    $("#myForm" + numString).css("display", "none");
+                    //document.getElementById(go).style.display = "none";
+                }
+
+            });
+
+        });
+    </script>
 
 
 </body>

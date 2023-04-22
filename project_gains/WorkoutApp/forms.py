@@ -13,3 +13,8 @@ class NewHashtag(forms.Form):
 class LoginUser(forms.Form):
     user_name = forms.CharField(max_length=50)
     password = forms.CharField(max_length = 50)
+
+class ChangeProfile(forms.Form):
+    avatar = forms.ImageField(required=False)
+    bio = forms.CharField(required=False)
+    banner = forms.ImageField(required=False)

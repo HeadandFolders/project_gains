@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.apps import apps #from stackoverflow 
 from django.db.models import Sum #from another stackoverflow post https://stackoverflow.com/questions/56046688/how-to-get-the-sum-of-a-field-in-django
 from django.db.models import Avg
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 #personal observation: like in cpp the function order matters here(i.e when Hashtag was below Post there was a warning that Hashtag was not created or smthng?)
 """
@@ -55,9 +57,12 @@ class AccGroup(models.Model):
         return self.name
     
 class UserProfile(models.Model):
-    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     profile_pic = models.ImageField('profile picture', upload_to='media/WorkoutApp/', null=True, blank=True, default="media/WorkoutApp/defaultavatar.jpg")
-    bio = models.CharField(max_length=300)
-
+    bio = models.CharField(max_length=300, null=True)
+    banner_pic = models.ImageField('banner pic', upload_to='media/WorkoutApp/banners', null=True, blank=True, default="media/WorkoutApp/banners/yes4.jpg")
+    saved_posts = models.ManyToManyField(Post)
     def __str__(self):
         return f"{self.name}"
+    
+    
