@@ -14,6 +14,12 @@ from django.utils import timezone
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django.urls import resolve
+from django.utils import timezone, dateformat #maybe not needed
+from calendar import HTMLCalendar
+from datetime import datetime, date
+
+
+
 
 # Create your views here.
 
@@ -67,16 +73,113 @@ def loginuser(request):
     return HttpResponse(template.render(context, request))
 """
 
+#from IPython.display import HTML
+
+# Based on https://stackoverflow.com/a/1458077/1639671
+class HighlightedCalendar(HTMLCalendar):
+    def __init__(self, highlight=[], *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._highlight = highlight
+    
+    def formatday(self, day, weekday):
+        """
+        Return a day as a table cell.
+        """
+        cssclass = self.cssclasses[weekday]
+        if date.today() == date(self.year, self.month, day):
+            cssclass += ' today'
+        if day in self.workouts:
+            cssclass += ' filled'
+            
+            return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
+        return self.day_cell(cssclass, day)
+    
+    def day_cell(self, cssclass, body):
+        return '<td class="%s">%s</td>' % (cssclass, body)
+
+from itertools import groupby
+
+from django.utils.html import conditional_escape as esc
+
+class WorkoutCalendar(HTMLCalendar):
+
+    def __init__(self, workouts):
+        super(WorkoutCalendar, self).__init__()
+        self.workouts = self.group_by_day(workouts)
+
+    def formatday(self, day, weekday):
+        if day != 0:
+            cssclass = self.cssclasses[weekday]
+            if date.today() == date(self.year, self.month, day):
+                cssclass += ' today'
+            if day in self.workouts:
+                cssclass += ' filled'
+                #body = ['<ul>']
+                #for workout in self.workouts[day]:
+                 #   body.append('<li>')
+                  #  body.append('<a href="%s">' % workout.url.url)
+                  #  body.append(esc(workout.rating))
+                  #  body.append('</a></li>')
+                #body.append('</ul>')
+                #return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
+            return self.day_cell(cssclass, day)
+        return self.day_cell('noday', '&nbsp;')
+
+    def formatmonth(self, year, month):
+        self.year, self.month = year, month
+        return super(WorkoutCalendar, self).formatmonth(year, month)
+
+    def group_by_day(self, workouts):
+        field = lambda workout: workout.pub_date.day
+        return dict(
+            [(day, list(items)) for day, items in groupby(workouts, field)]
+        )
+
+    def day_cell(self, cssclass, body):
+        return '<td class="%s">%s</td>' % (cssclass, body)
+
+
 def profile(request, username=None):
         if username:
             print(username)
             user = get_object_or_404(User, username=username)
         else:
             user = request.user
+        
+        date_year = timezone.now().year
+        date_month = timezone.now().month
+        #cal = HTMLCalendar().formatmonth(date_year,date_month)
 
+        userposts= Post.objects.filter(pub_date__year=date_year, 
+                      pub_date__month=date_month, author__username = username)
+        print(userposts)
+        highlight = [1,2,3,4,5,6,7]
+        #myset = set()
+        #for dateobj in userposts:
+            #for x,y in dateobj.items(): #https://stackoverflow.com/questions/64374956/print-values-of-dictionary-one-by-one
+                #highlight.append(y.day)
+         #       if y in highlight:
+          #          print("its in here")
+           #     else:
+                    #highlight.append(int(y.day))
+            #        print(type(int(y.day)))
+        #print(myset)
+        #highlight = list(myset)
+        print(highlight)
+        #days = datetime.strptime(userposts[1][1], '%d')
+        #print(userposts)
+        cal = WorkoutCalendar(userposts).formatmonth(date_year, date_month)
+        #cal = HighlightedCalendar(highlight=highlight).formatmonth(date_month, date_year)
         profile = get_object_or_404(UserProfile, name__username=user.username)
         print(profile.bio)
-        args = {'user': user, 'tasks': Post.objects.filter(author__username= user.username),'image': profile, 'formpost': NewPostForm(), 'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating"))}
+        args = {
+            'user': user,
+            'cal': cal,
+            'tasks': Post.objects.filter(author__username= user.username),
+            'image': profile, 'formpost': NewPostForm(), 
+            'avg_rating': Video.objects.values("url").annotate(average_rating=Avg("post__rating")),
+            'daterange': userposts,
+        }
         return render(request, 'WorkoutApp/profile.html', args)
 
 

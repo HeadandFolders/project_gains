@@ -43,7 +43,7 @@
 
         .column {
             width: 80%;
-            margin-top: 250px;
+            margin-top: 7%;
             /*left: 130px;*/
             border: 1px solid rgb(151, 147, 167);
             margin-bottom: 50px;
@@ -66,87 +66,122 @@
         }
 
         .comment {
-      position: absolute;
-      right: 0px;
-      text-align: start;
-      
-      width: 30%;
-      height: 100%;
-      font-size: small;
-      top:0%;
-    }
+            position: absolute;
+            right: 0px;
+            text-align: start;
+
+            width: 30%;
+            height: 100%;
+            font-size: small;
+            top: 0%;
+        }
 
 
-    /* The popup form - hidden by default */
-    .form-popup {
-      display: none;
-      position: absolute;
-      right: 0px;
-      top: 0px;
-      border: 3px solid #f1f1f1;
-      width: 100%;
-      height: fit-content;
-      border-radius: 4px;
+        /* The popup form - hidden by default */
+        .form-popup {
+            display: none;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            border: 3px solid #f1f1f1;
+            width: 100%;
+            height: fit-content;
+            border-radius: 4px;
 
-    }
+        }
 
-    /* Add styles to the form container */
-    .form-container {
-      width: 100%;
-      padding: 5px;
-      background-color: white;
-      right: 0px;
-    }
+        /* Add styles to the form container */
+        .form-container {
+            width: 100%;
+            padding: 5px;
+            background-color: white;
+            right: 0px;
+        }
 
-    /* Full-width input fields */
-    .form-container input[type=text],
-    .form-container input[type=password] {
-      width: 100px;
-      padding: 5px;
-      margin: 2px 0 5px 0;
-      border: none;
-      background: #f1f1f1;
-    }
+        /* Full-width input fields */
+        .form-container input[type=text],
+        .form-container input[type=password] {
+            width: 100px;
+            padding: 5px;
+            margin: 2px 0 5px 0;
+            border: none;
+            background: #f1f1f1;
+        }
 
-    .form-container label {
-      color: #0B7A75;
+        .form-container label {
+            color: #0B7A75;
 
-    }
+        }
 
-    /* When the inputs get focus, do something */
-    .form-container input[type=text]:focus,
-    .form-container input[type=password]:focus {
-      background-color: #ddd;
-      outline: none;
-    }
+        /* When the inputs get focus, do something */
+        .form-container input[type=text]:focus,
+        .form-container input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
 
-    /* Set a style for the submit/login button */
-    .form-container .btn {
-      background-color: #04AA6D;
-      color: white;
-      padding: 5px 5px;
-      border: none;
-      cursor: pointer;
-      width: 80%;
-      margin-bottom: 5px;
-      opacity: 0.8;
-    }
+        /* Set a style for the submit/login button */
+        .form-container .btn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 5px 5px;
+            border: none;
+            cursor: pointer;
+            width: 80%;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
 
-    /* Add a red background color to the cancel button */
-    .form-container .cancel {
-      background-color: red;
-    }
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
 
-    /* Add some hover effects to buttons */
-    .form-container .btn:hover,
-    .open-button:hover {
-      opacity: 1;
-    }
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover,
+        .open-button:hover {
+            opacity: 1;
+        }
 
+        .filled {
+            background-color: orange;
+        }
+
+        .calendarparent {
+
+            width: 50%;
+            
+            float:right;
+        }
+
+        .calendarparent p {
+            font-size: 12px;
+            margin-left: 4%;
+            display: inline-block;
+        }
+
+        .calendar {
+
+            width: fit-content;
+            padding: auto;
+            border: 2px solid rgb(125, 134, 149);
+            border-radius: 15px;
+
+        }
+
+        th.month {
+            color: red;
+        }
+
+        td,
+        th {
+            padding: 4px;
+        }
     </style>
 </head>
 
 <body>
+
     {% load static %}
     <!--img src="{{ image.profile_pic }}" style="width: 100px;height: 100px;border-radius: 50%;"-->
     <div id="test">
@@ -168,9 +203,12 @@
                 <p style="font-size: small;">{{user.email}}</p>
             </div>
         </div>
+    </center>
+    <div style="margin-top: 90px;margin-right: 20px;height: 250px;border: 2px solid blue;position: relative;">
+
 
         {% if image.name.username == request.user.username %}
-        <div style="width:40%;margin-top: 90px;margin-right: 20px;text-align: left;">
+        <div style="width:50%;text-align: left;margin-left: 120px;position: absolute;">
             <form action="{% url 'WorkoutApp:profile' request.user %}" method="post">
                 {% csrf_token %}
                 <label for="avatar">Avatar:</label>
@@ -186,7 +224,16 @@
             </form>
         </div>
         {% endif %}
-    </center>
+
+        <div class="calendarparent">
+            <p>Activity in the last month</p>
+            <div class="calendar">
+
+                {{cal|safe}}
+            </div>
+        </div>
+
+    </div>
     <center>
         <div class="column">
             <h2 style="text-align: start;color: #4f7cac;">Posts:</h2>
